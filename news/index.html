@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width-device-width, initial-scale=1">
+        <title>Inews - sumber berita bohong terpercaya</title>
+        <link rel="stylesheet" type="text/css" href="../../style.css">
+        <link rel="stylesheet" type="text/css" href="../../new.css">
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+        <script defer src="../../shared/header.js"></script>
+        <script src="../../showdown/dist/showdown.min.js"></script>
+    </head>
+    <body>
+        <script>
+	var converter = new showdown.Converter();
+const href = window.location.href;
+const slug = href.split("/");
+const url = slug[slug.length - 1];
+const type = slug[slug.length - 2];
+let html;
+const f = fetch(`http://localhost:8081/${type}/${url}.md`).then(function(response) {
+   if (response.status === 404) return false; 
+    return response.text();
+  }).then(function(data) {
+      const article = document.querySelector('#berita');
+      if (data === false) {
+          html = `not found`;
+      } else  {
+          html = converter.makeHtml(data); 
+      }
+    article.innerHTML += html;
+  });
+        </script>
+        <div class="header"></div>
+        <div class="container">
+            <article id="berita" class="splendor">
+            </article>
+        </div>
+                </body>
+</html>
